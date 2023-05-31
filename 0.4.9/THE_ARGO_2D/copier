@@ -1,0 +1,5 @@
+for dir in THE_PROBLEMS/*/; do
+  cp the*analyzer*.py ${dir}
+  cp the_div_calcer*.py ${dir}
+  cp the_plotter*.py ${dir}
+done

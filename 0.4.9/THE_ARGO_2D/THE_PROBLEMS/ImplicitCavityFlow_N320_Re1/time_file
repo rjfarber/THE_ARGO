@@ -1,0 +1,6 @@
+implicit_cavity_flow_2d.py:74: RuntimeWarning: divide by zero encountered in double_scalars
+  /  np.sum(np.abs(p_old)))
+
+real	3m44.860s
+user	3m6.047s
+sys	0m38.014s

@@ -1,0 +1,60 @@
+## the_basher
+## by Ryan Farber 21 January 2015
+## Last modified: 23 January 2015
+#################################
+# The purpose of this bash script is to execute problem files
+# for The Argo. It can also "clean_up" (remove plots and
+# files) and or not by setting the CLEAN_UP flag. 
+# 0 means true and 1 or anything else means false.
+
+CD_1D=0   #on
+#CD_1D=-1   #off
+
+CD_2D=0   #on
+#CD_2D=-1   #off
+
+#CD_3D=0   #on
+CD_3D=-1   #off
+
+CLEAN_UP=0   # on
+#CLEAN_UP=-1  # off
+
+#EXECUTE=0   #on
+EXECUTE=-1   #off
+
+for argo_dir in */; do
+  if ([ ${argo_dir} == "THE_ARGO_3D/" ] && [ ${CD_3D} == 0 ]) || \
+     ([ ${argo_dir} == "THE_ARGO_2D/" ] && [ ${CD_2D} == 0 ]) || \
+     ([ ${argo_dir} == "THE_ARGO_1D/" ] && [ ${CD_1D} == 0 ]); then
+    cd ${argo_dir}
+      cd THE_PROBLEMS
+        for dir in */; do
+          cd ${dir}
+            if [ ${CLEAN_UP} == 0 ]; then
+              txt_files=$(ls *.txt 2> /dev/null | wc -l)
+              if [ **"$txt_files" != "0"** ]; then
+                rm *.txt 2> /dev/null
+              fi
+              rm -r Plots; rm -r StateFiles
+              mkdir Plots; mkdir StateFiles
+            fi # CLEAN_UP
+
+            if [ ${EXECUTE} == 0 ]; then
+              cur_dir="$(echo ${dir:0:3} | tr '[A-Z]' '[a-z]')"
+              python INPUTS*.py
+              python ${cur_dir}*.py
+#              cp ../../the_div_calcer*.py ./
+#              python the_div_calcer*.py
+              if [ ${dir} != "Burgers1D/" ]; then
+                cp ../../the_plotter*.py ./ 
+                python the_plotter*.py
+#                rm the_plotter*.py
+              fi # Not Burgers_1D
+            fi # EXECUTE 
+          cd .. # from a problem folder
+        done
+      cd .. # from THE_PROBLEMS
+    cd .. # from THE_ARGO_*D
+  fi
+done
+## end the_basher  

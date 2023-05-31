@@ -1,0 +1,5 @@
+for dir in THE_PROBLEMS/*/; do
+  cd ${dir}
+  cp ../../the_div_calcer*.py ./
+  cd ../..
+done

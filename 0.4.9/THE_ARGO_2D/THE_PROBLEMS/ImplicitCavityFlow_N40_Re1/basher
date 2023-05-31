@@ -1,0 +1,8 @@
+## get path to this script
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+cd $DIR
+
+(time (python implicit_cavity_flow_2d.py >> PRINTS) 2>&1 1>/dev/null ) >> time_file
+
+python the_plotter_2d.py
